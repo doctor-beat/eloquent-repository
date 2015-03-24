@@ -1,0 +1,19 @@
+{
+    "name": "doctorbeat/eloquent-repository",
+    "description": "A repositories for eloquent models. Using this makes the model appear to have a sigle responsibility",
+    "keywords": ["eloquent", "repository"],
+    "license": "",
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "mockery/mockery": "*"
+    },
+    "autoload": {
+        "psr-4": { "DoctorBeat\\": "src/DoctorBeat/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "DoctorBeat\\": "tests/DoctorBeat/" }
+    }
+}
