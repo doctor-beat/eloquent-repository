@@ -21,7 +21,7 @@ In comes the Eloquent Repository which make you able to use a model as an entity
 methods to the repository. The repository comes with an interface which can be mocked.
 
 ## Methods and api
-These methods are available on the repository and have the api as the equal Eloquent method:
+These methods are available on the repository and have an api equal to the corresponding Eloquent method:
 - save
 - delete
 - push

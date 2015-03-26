@@ -1,6 +1,6 @@
 {
     "name": "doctorbeat/eloquent-repository",
-    "description": "A repositories for eloquent models. Using this makes the model appear to have a sigle responsibility",
+    "description": "A repository for eloquent models. Using this makes the model appear to have a sigle responsibility",
     "keywords": ["eloquent", "repository"],
     "license": "",
     "require": {
