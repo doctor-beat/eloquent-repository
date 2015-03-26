@@ -2,7 +2,7 @@
     "name": "doctorbeat/eloquent-repository",
     "description": "A repository for eloquent models. Using this makes the model appear to have a sigle responsibility",
     "keywords": ["eloquent", "repository"],
-    "license": "",
+	"license": "MIT",
     "require": {
         "php": ">=5.3.2"
     },
