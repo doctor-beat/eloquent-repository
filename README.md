@@ -6,7 +6,7 @@ and thus makes them unit-testable in isolation
 Via composer:
 
 ```
-"doctorbeat/eloquent-repository": "dev-master"
+require: "doctorbeat/eloquent-repository": "*"
 ```
 
 ## Why a respository?
