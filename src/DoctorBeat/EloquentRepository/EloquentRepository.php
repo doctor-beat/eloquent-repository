@@ -107,6 +107,8 @@ class EloquentRepository implements Repository {
     
     /**
      * Method to update a belongsTo relationship, the equivalent of $relation->associate($entity)
+     * Unlike other methods in this class this method is save to call directly on the model as it does
+     * not do a $model->save() internally.
      * @param BelongsTo $relation
      * @param Model $entity
      * @return Model the parent of the relation
