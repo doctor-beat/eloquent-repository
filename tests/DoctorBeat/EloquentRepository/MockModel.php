@@ -58,4 +58,8 @@ class MockModel {
     public function getCallCount($method){
         return $this->callCount[$method];
     }
+    
+    public function getAttribute($key) {
+        return 'value:' . $key;
+    }
 }

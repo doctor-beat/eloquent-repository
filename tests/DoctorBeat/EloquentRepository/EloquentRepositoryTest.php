@@ -69,6 +69,15 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
        $this->assertTrue($result);
        $this->assertSame(1, $entity->getCallCount('delete'));
    }
+
+   public function testGetAttribute() {
+       $modelName = self::MODEL_NAME;
+       $entity = new $modelName();      /** @var MockModel Description */
+       
+       $key = 'relation';
+       $result = $this->object->getAttribute($entity, $key);
+       $this->assertSame('value:'.$key, $result);
+   }
     
     public function testCanWeMockIt() {
         $mock = m::mock('DoctorBeat\\EloquentRepository\\Repository');

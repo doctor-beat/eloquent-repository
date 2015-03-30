@@ -13,4 +13,7 @@ interface Repository {
     function touch($entity);
     function all();
     function find($id);
+    function getAttribute($entity, $key);
+    function addTo($relation, $entities);
+    function associate($relation, $entity);
 }

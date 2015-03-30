@@ -79,9 +79,48 @@ class EloquentRepository implements Repository {
         return $entity->save();
     }
 
+    /**
+     * Method to retrieve the dynamic relationship properteis from the eloquent model.
+     * So instead of using $model->comments do $repo->getAttribute($model, 'comments')
+     * @param Model $entity
+     * @param string $key
+     * @return mixed the requested value
+     */
+    public function getAttribute($entity, $key) {
+		return $entity->getAttribute($key);
+	}
+
+    /**
+     * Method to attach a related model, the equivalent of $post->comments()->save($comment)
+     * which translates to $repo->addTo($post->comments, $comment)
+     * @param HasOneOrMany $relation
+     * @param Model or array() of Models $entities
+     * @return mixed
+     */
+    public function addTo($relation, $entities) {
+        if (is_array($entities)) {
+            return $relation->saveMany($entities);
+        } else {
+            return $relation->save($entities);
+        }
+	}
+    
+    /**
+     * Method to update a belongsTo relationship, the equivalent of $relation->associate($entity)
+     * @param BelongsTo $relation
+     * @param Model $entity
+     * @return Model the parent of the relation
+     */
+    public function associate($relation, $entity) {
+        return $relation->associate($entity);
+    }
+
+
     public function __call($method, $parameters) {
         //rewrite any non-implemented dynamic method to a static method
         return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);
     }
+    
+
     
 }
