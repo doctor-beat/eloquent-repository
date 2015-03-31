@@ -83,9 +83,48 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
        $modelName = self::MODEL_NAME;
        $entity = new $modelName();      /** @var MockModel Description */
        
+       $mock = m::mock('LaravelRelation');
+       $entity->setRelation($mock);
+
        $result = $this->object->myRelation($entity);
-       $this->assertSame([], $result);
+       $this->assertSame($mock, $result);
        $this->assertSame(1, $entity->getCallCount('myRelation'));
+   }
+   
+   public function testAddTo() {
+       $modelName = self::MODEL_NAME;
+       $entity = new $modelName();      /** @var MockModel Description */
+       
+       $obj = new \stdClass();
+       $obj->name = rand(1, 10000);
+       
+       $mock = m::mock('LaravelRelation');
+       $mock->shouldReceive('save')->once()->with($obj)->andReturn($obj);
+       $entity->setRelation($mock);
+       
+       //add the object to the relation 'myRelation':
+       $result = $this->object->myRelation($entity, $obj);  
+       
+       $this->assertSame(1, $entity->getCallCount('myRelation'));
+       $this->assertSame($mock, $result);
+   }
+
+   public function testAddToList() {
+       $modelName = self::MODEL_NAME;
+       $entity = new $modelName();      /** @var MockModel Description */
+       
+       $objs[] = new \stdClass();
+       $objs[] = new \stdClass();
+       
+       $mock = m::mock('LaravelRelation');
+       $mock->shouldReceive('saveMany')->once()->with($objs)->andReturn($objs);
+       $entity->setRelation($mock);
+
+       //add the object to the relation 'myRelation':
+       $result = $this->object->myRelation($entity, $objs);  
+       
+       $this->assertSame(1, $entity->getCallCount('myRelation'));
+       $this->assertSame($mock, $result);
    }
     
     public function testCanWeMockIt() {

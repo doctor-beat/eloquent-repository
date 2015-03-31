@@ -15,6 +15,12 @@ class MockModel {
         'myRelation' => 0,
     );
     
+    protected $relation;
+    
+    function setRelation($relation) {
+        $this->relation = $relation;
+    }
+    
     public static function all() {
         $list = array();
         
@@ -66,6 +72,6 @@ class MockModel {
     
     public function myRelation() {
         $this->callCount['myRelation']++;
-        return [];
+        return $this->relation;
     }
 }

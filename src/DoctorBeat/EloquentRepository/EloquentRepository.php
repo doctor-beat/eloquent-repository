@@ -97,7 +97,7 @@ class EloquentRepository implements Repository {
      * @param Model or array() of Models $entities
      * @return mixed
      */
-    public function addTo($relation, $entities) {
+    private function addTo($relation, $entities) {
         if (is_array($entities)) {
             return $relation->saveMany($entities);
         } else {
@@ -122,7 +122,13 @@ class EloquentRepository implements Repository {
         if (count($parameters) > 0 && is_object($parameters[0]) && method_exists($parameters[0], $method)) {
             //dynamic matching method found, use this:
             $instance = array_shift($parameters);
-            return $instance->$method($parameters);
+            $relation = $instance->$method();
+
+            //if we have more paramaters these should be added to the relationship:
+            if (count($parameters) > 0) {
+                $this->addTo($relation, $parameters[0]);
+            }
+            return $relation;
         } else {
             //rewrite any non-implemented dynamic method to a static method
             return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);

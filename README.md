@@ -31,6 +31,20 @@ These methods are available on the repository and have an api equal to the corre
 - where*
 - all other static methods
 
+## Relations
+To get relations from the repository use these methods:
+```php
+   [Model:]           [Repository:]                             [result]
+-  $model->parent     $repo->getAttribute($model, 'parent');    the parent model
+-  $model->children   $repo->getAttribute($model, 'children');  the child models as a collection
+-  $model->children() $repo->children($model);                  the child models as a relation
+-  $model->children()->save($child)
+                      $repo->children($model, $child);          add the child to the children of the model
+-  $model->children()->saveMany($list)
+                      $repo->children($model, $list);           add an array of new children to the children of the model
+```
+These examples assume that you have defined parent and children as relations on the model!
+
 ## Usage
 ```php
         $repo = new EloquentRepository('App\\Person');
