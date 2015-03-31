@@ -119,8 +119,14 @@ class EloquentRepository implements Repository {
 
 
     public function __call($method, $parameters) {
-        //rewrite any non-implemented dynamic method to a static method
-        return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);
+        if (count($parameters) > 0 && is_object($parameters[0]) && method_exists($parameters[0], $method)) {
+            //dynamic matching method found, use this:
+            $instance = array_shift($parameters);
+            return $instance->$method($parameters);
+        } else {
+            //rewrite any non-implemented dynamic method to a static method
+            return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);
+        }
     }
     
 

@@ -11,7 +11,8 @@ use Mockery as m;
 class MockModel {
     protected $callCount = array(
         'save'=> 0,
-        'delete'=> 0,        
+        'delete'=> 0, 
+        'myRelation' => 0,
     );
     
     public static function all() {
@@ -61,5 +62,10 @@ class MockModel {
     
     public function getAttribute($key) {
         return 'value:' . $key;
+    }
+    
+    public function myRelation() {
+        $this->callCount['myRelation']++;
+        return [];
     }
 }
