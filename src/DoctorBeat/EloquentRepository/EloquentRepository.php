@@ -126,7 +126,7 @@ class EloquentRepository implements Repository {
 
             //if we have more paramaters these should be added to the relationship:
             if (count($parameters) > 0) {
-                $this->addTo($relation, $parameters[0]);
+                return $this->addTo($relation, $parameters[0]);
             }
             return $relation;
         } else {
