@@ -15,4 +15,9 @@ interface Repository {
     function find($id);
     function getAttribute($entity, $key);
     function associate($relation, $entity);
+    /**
+     * perform a mass delete on all rows selected by the where conditions
+     * @param ... where conditions as per where()     
+     */
+    function deleteWhere();
 }

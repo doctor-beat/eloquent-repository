@@ -3,8 +3,10 @@
 namespace DoctorBeat\EloquentRepository;
 
 use Mockery as m;
+use PHPUnit_Framework_TestCase;
+use stdClass;
 
-class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
+class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
     
     const MODEL_NAME = 'DoctorBeat\\EloquentRepository\\MockModel';
 
@@ -106,7 +108,7 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
        $result = $this->object->myRelation($entity, $obj);  
        
        $this->assertSame(1, $entity->getCallCount('myRelation'));
-       $this->assertSame($mock, $result);
+       $this->assertSame($obj, $result);
    }
 
    public function testAddToList() {
@@ -124,7 +126,7 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
        $result = $this->object->myRelation($entity, $objs);  
        
        $this->assertSame(1, $entity->getCallCount('myRelation'));
-       $this->assertSame($mock, $result);
+       $this->assertSame($objs, $result);
    }
     
     public function testCanWeMockIt() {
@@ -136,6 +138,20 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
         
         $this->assertTrue($mock->save($user));
         $this->assertSame($user, $mock->where_email('xyz'));
+    }
+
+    public function testDeleteWhere() {
+        $mockQuery = MockModel::mockQuery();
+        $mockQuery->shouldReceive('delete')->once();
+
+        $this->object->deleteWhere('1', '=', '1');
+    }
+
+    public function testDeleteWhereName() {
+        $mockQuery = MockModel::mockQuery();
+        $mockQuery->shouldReceive('delete')->once();
+
+        $this->object->deleteWhere_name('xyz');
     }
     
     private function assertClassName($object) {

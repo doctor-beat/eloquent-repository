@@ -16,6 +16,7 @@ class MockModel {
     );
     
     protected $relation;
+    protected static $query = null;
     
     function setRelation($relation) {
         $this->relation = $relation;
@@ -45,9 +46,14 @@ class MockModel {
         $self->id = rand(0, 100);
         $self->name = $name;
         
-        $query = m::mock('LavarelQuery');
+        $query = self::mockQuery();
         $query->shouldReceive('get')->andReturn(array($self));
         $query->shouldReceive('first')->andReturn($self);
+        
+        return $query;
+    }
+    public static function where($x, $y, $z = true) {
+        $query = self::mockQuery();
         
         return $query;
     }
@@ -73,5 +79,16 @@ class MockModel {
     public function myRelation() {
         $this->callCount['myRelation']++;
         return $this->relation;
+    }
+
+    /**
+     * init&get the mock-query-object
+     * @return m\MockInterface
+     */
+    public static function mockQuery() {
+        if (self::$query == null) {
+            self::$query = m::mock('LavarelQuery');
+        }
+        return self::$query;
     }
 }

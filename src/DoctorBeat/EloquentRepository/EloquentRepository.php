@@ -117,24 +117,31 @@ class EloquentRepository implements Repository {
         return $relation->associate($entity);
     }
 
+    public function deleteWhere() {
+        $args = func_get_args();
+        return call_user_func_array(array($this, "where"), $args)->delete();        
+    }
 
     public function __call($method, $parameters) {
-        if (count($parameters) > 0 && is_object($parameters[0]) && method_exists($parameters[0], $method)) {
-            //dynamic matching method found, use this:
-            $instance = array_shift($parameters);
-            $relation = $instance->$method();
-
-            //if we have more paramaters these should be added to the relationship:
-            if (count($parameters) > 0) {
-                return $this->addTo($relation, $parameters[0]);
-            }
-            return $relation;
+        if (preg_match('/^deleteWhere(.*)$/', $method, $matches)) {
+            //rewrite calls that start with 'deleteWhere' to where()->delete:
+            return call_user_func_array("{$this->modelClassname}::where{$matches[1]}", $parameters)->delete();  
         } else {
-            //rewrite any non-implemented dynamic method to a static method
-            return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);
+            if (count($parameters) > 0 && is_object($parameters[0]) && method_exists($parameters[0], $method)) {
+                //dynamic matching method found, use this:
+                $instance = array_shift($parameters);
+                $relation = $instance->$method();
+
+                //if we have more paramaters these should be added to the relationship:
+                if (count($parameters) > 0) {
+                    return $this->addTo($relation, $parameters[0]);
+                }
+                return $relation;
+            } else {
+                //rewrite any non-implemented dynamic method to a static method
+                return call_user_func_array("{$this->modelClassname}::{$method}", $parameters);
+            }
         }
     }
-    
 
-    
 }
